@@ -25,11 +25,45 @@ export function ListCreator() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+    <div className="min-h-screen bg-gray-50 p-6 relative">
+      {/* Logo and Title Row */}
+      <div className="w-full max-w-7xl mx-auto mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
+          {/* Left: Logo */}
+          <div className="hidden lg:flex justify-center">
+            <span className="text-2xl font-bold text-gray-900 inline-block">
+              TODONT
+            </span>
+          </div>
+
+          {/* Center: Title */}
+          <div className="w-full max-w-2xl mx-auto lg:mx-0">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                To Don't
+              </h1>
+              <p className="text-gray-600">
+                Track things you want to avoid doing
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Empty for balance */}
+          <div className="hidden lg:block"></div>
+        </div>
+
+        {/* Mobile Logo */}
+        <div className="lg:hidden absolute top-6 left-6">
+          <span className="text-2xl font-bold text-gray-900 inline-block">
+            TODONT
+          </span>
+        </div>
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
         {/* Left side - Explanation text panel */}
         <div className="hidden lg:flex justify-center">
-          <div className="bg-blue-50 rounded-lg p-5 border border-blue-100 w-64">
+          <div className="bg-blue-50 rounded-lg p-5 border border-blue-100 w-64 sticky top-6">
             <h3 className="text-sm font-semibold text-gray-900 mb-2">
               What is todont?
             </h3>
@@ -37,7 +71,7 @@ export function ListCreator() {
               An app for breaking bad habits.
            </p><br/>
            <p className="text-xs text-gray-700 leading-relaxed">Unlike todo lists where items
-              start unchecked, todont items start <strong>checked</strong> and 
+              start unchecked, todont items start <strong>checked</strong> and
               the goal is to uncheck them. As you avoid performing the tasks,
               you can uncheck the items to show, well you didn't complete them.
             </p><br/>
@@ -49,16 +83,7 @@ export function ListCreator() {
         </div>
 
         {/* Center - Main form */}
-        <div className="w-full max-w-md mx-auto lg:mx-0">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              To Don't
-            </h1>
-            <p className="text-gray-600">
-              Track things you want to avoid doing
-            </p>
-          </div>
-
+        <div className="w-full max-w-2xl mx-auto lg:mx-0">
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-900">
               Create a New List

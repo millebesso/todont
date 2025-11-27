@@ -48,8 +48,41 @@ export function TodontList() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start pt-12">
+    <div className="min-h-screen bg-gray-50 p-6 relative">
+      {/* Logo and Title Row */}
+      <div className="w-full max-w-7xl mx-auto mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+          {/* Left: Logo */}
+          <div className="hidden lg:flex justify-center">
+            <a
+              href="/"
+              className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors inline-block"
+            >
+              TODONT
+            </a>
+          </div>
+
+          {/* Center: List Name */}
+          <div className="w-full max-w-2xl mx-auto lg:mx-0">
+            <h1 className="text-3xl font-bold text-gray-900 text-center">{list.name}</h1>
+          </div>
+
+          {/* Right: Empty for balance */}
+          <div className="hidden lg:block"></div>
+        </div>
+
+        {/* Mobile Logo */}
+        <div className="lg:hidden absolute top-6 left-6">
+          <a
+            href="/"
+            className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors inline-block"
+          >
+            TODONT
+          </a>
+        </div>
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
         {/* Left side - Explanation text panel */}
         <div className="hidden lg:flex justify-center">
           <div className="bg-blue-50 rounded-lg p-5 border border-blue-100 w-64 sticky top-6">
@@ -75,7 +108,6 @@ export function TodontList() {
 
         {/* Center - Main content */}
         <div className="w-full max-w-2xl mx-auto lg:mx-0">
-          <h1 className="text-3xl font-bold mb-6 text-gray-900 text-center">{list.name}</h1>
 
           <div className="bg-white rounded-lg shadow-md p-4 mb-6">
             {list.items.length === 0 ? (
