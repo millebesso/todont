@@ -80,6 +80,7 @@ app.MapGet("/api/lists/{id}", (string id, ITodontRepository repository) =>
             avoidUntil = item.AvoidUntil,
             isChecked = item.IsChecked,
             isActive = item.IsActive(),
+            canUncheck = item.CanUncheck(),
             createdAt = item.CreatedAt
         }),
         createdAt = list.CreatedAt
@@ -106,6 +107,7 @@ app.MapPost("/api/lists/{listId}/items", (string listId, CreateTodontItemRequest
             avoidUntil = item.AvoidUntil,
             isChecked = item.IsChecked,
             isActive = item.IsActive(),
+            canUncheck = item.CanUncheck(),
             createdAt = item.CreatedAt
         });
     }
@@ -120,6 +122,25 @@ app.MapPost("/api/lists/{listId}/items", (string listId, CreateTodontItemRequest
 // Update an item's checked status
 app.MapPatch("/api/lists/{listId}/items/{itemId}", (string listId, string itemId, UpdateTodontItemRequest request, ITodontRepository repository) =>
 {
+    // Get the list and item for validation
+    var list = repository.GetList(listId);
+    if (list == null)
+    {
+        return Results.NotFound(new { error = "List not found" });
+    }
+
+    var item = list.Items.FirstOrDefault(i => i.Id == itemId);
+    if (item == null)
+    {
+        return Results.NotFound(new { error = "Item not found" });
+    }
+
+    // Validate: if trying to uncheck, ensure the avoid-until date has passed
+    if (!request.IsChecked && !item.CanUncheck())
+    {
+        return Results.BadRequest(new { error = "Cannot uncheck item before avoid-until date has passed" });
+    }
+
     var success = repository.UpdateItemStatus(listId, itemId, request.IsChecked);
     if (!success)
     {

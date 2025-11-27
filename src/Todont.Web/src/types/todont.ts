@@ -4,6 +4,7 @@ export type TodontItem = {
   avoidUntil: string | null;
   isChecked: boolean;
   isActive: boolean;
+  canUncheck: boolean;
   createdAt: string;
 };
 

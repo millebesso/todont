@@ -18,4 +18,12 @@ public class TodontItem
 
         return DateTime.UtcNow < AvoidUntil.Value;
     }
+
+    public bool CanUncheck()
+    {
+        if (AvoidUntil == null)
+            return true;
+
+        return DateTime.UtcNow >= AvoidUntil.Value;
+    }
 }

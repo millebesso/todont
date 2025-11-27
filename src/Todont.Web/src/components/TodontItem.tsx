@@ -14,6 +14,9 @@ export function TodontItem({ item, onToggle }: TodontItemProps) {
     return new Date(dateString).toLocaleDateString();
   };
 
+  // Disable checkbox if item is checked and can't be unchecked yet
+  const isDisabled = item.isChecked && !item.canUncheck;
+
   return (
     <div
       className={`flex items-center gap-3 py-2 px-3 rounded ${
@@ -24,7 +27,10 @@ export function TodontItem({ item, onToggle }: TodontItemProps) {
         type="checkbox"
         checked={item.isChecked}
         onChange={handleCheckboxChange}
-        className="w-5 h-5 accent-blue-600 cursor-pointer"
+        disabled={isDisabled}
+        className={`w-5 h-5 accent-blue-600 ${
+          isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+        }`}
       />
       <div className="flex-1">
         <span className={item.isActive ? 'font-normal' : 'font-light'}>
