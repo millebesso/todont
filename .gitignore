@@ -100,3 +100,6 @@ lerna-debug.log*
 # Temporary files
 *.log
 .cache/
+
+# Claude-file
+CLAUDE.md
