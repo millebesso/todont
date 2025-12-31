@@ -28,7 +28,7 @@ export function ListCreator() {
     <div className="min-h-screen bg-gray-50 p-6 relative">
       {/* Logo and Title Row */}
       <div className="w-full max-w-7xl mx-auto mb-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_42rem_1fr] gap-8 items-start">
           {/* Left: Logo */}
           <div className="hidden lg:flex justify-center">
             <span className="text-2xl font-bold text-gray-900 inline-block">
@@ -60,7 +60,7 @@ export function ListCreator() {
         </div>
       </div>
 
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_42rem_1fr] gap-8 items-start">
         {/* Left side - Explanation text panel */}
         <div className="hidden lg:flex justify-center">
           <div className="bg-blue-50 rounded-lg p-5 border border-blue-100 w-64 sticky top-6">
