@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { TodontList, TodontItem } from '../types/todont.js';
+import type { TodontList } from '../types/todont.js';
 import * as api from '../utils/api';
 
 interface UseTodontListResult {
@@ -71,7 +71,7 @@ export function useTodontList(listId: string | undefined): UseTodontListResult {
               ? {
                   ...item,
                   isChecked,
-                  isActive: isChecked || (item.avoidUntil && new Date(item.avoidUntil) > new Date()),
+                  isActive: isChecked || Boolean(item.avoidUntil && new Date(item.avoidUntil) > new Date()),
                 }
               : item
           ),
