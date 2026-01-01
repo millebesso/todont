@@ -1,0 +1,8 @@
+bin/
+obj/
+.git/
+.gitignore
+*.md
+*.http
+Properties/launchSettings.json
+appsettings.Development.json
