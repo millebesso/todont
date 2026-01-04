@@ -56,7 +56,7 @@ export function TodontList() {
           <div className="hidden lg:flex justify-center">
             <a
               href="/"
-              className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors inline-block"
+              className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors inline-block logo-font"
             >
               TODONT
             </a>
@@ -75,7 +75,7 @@ export function TodontList() {
         <div className="lg:hidden absolute top-6 left-6">
           <a
             href="/"
-            className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors inline-block"
+            className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors inline-block logo-font"
           >
             TODONT
           </a>

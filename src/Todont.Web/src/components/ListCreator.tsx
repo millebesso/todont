@@ -31,7 +31,7 @@ export function ListCreator() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_42rem_1fr] gap-8 items-start">
           {/* Left: Logo */}
           <div className="hidden lg:flex justify-center">
-            <span className="text-2xl font-bold text-gray-900 inline-block">
+            <span className="text-2xl font-bold text-gray-900 inline-block logo-font">
               TODONT
             </span>
           </div>
@@ -54,7 +54,7 @@ export function ListCreator() {
 
         {/* Mobile Logo */}
         <div className="lg:hidden absolute top-6 left-6">
-          <span className="text-2xl font-bold text-gray-900 inline-block">
+          <span className="text-2xl font-bold text-gray-900 inline-block logo-font">
             TODONT
           </span>
         </div>

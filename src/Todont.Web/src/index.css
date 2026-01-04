@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@layer components {
+  .logo-font {
+    font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  }
+}
