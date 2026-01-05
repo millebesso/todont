@@ -103,3 +103,9 @@ lerna-debug.log*
 
 # Claude-file
 CLAUDE.md
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+data/

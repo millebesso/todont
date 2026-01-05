@@ -3,15 +3,30 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System.Text;
 
 public class ApiFactory : WebApplicationFactory<Program>
 {
+    private readonly string _testDbPath;
+
+    public ApiFactory()
+    {
+        _testDbPath = Path.Combine(Path.GetTempPath(), $"todont_test_{Guid.NewGuid()}.db");
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Test");
+        builder.ConfigureAppConfiguration((context, config) =>
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:DefaultConnection"] = $"Data Source={_testDbPath}"
+            });
+        });
         builder.ConfigureServices(services =>
         {
             services.Configure<HttpsRedirectionOptions>(options =>
@@ -19,6 +34,22 @@ public class ApiFactory : WebApplicationFactory<Program>
                 options.HttpsPort = 5001;
             });
         });
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        if (disposing && File.Exists(_testDbPath))
+        {
+            try
+            {
+                File.Delete(_testDbPath);
+            }
+            catch
+            {
+                // Ignore cleanup errors
+            }
+        }
     }
 }
 

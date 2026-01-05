@@ -4,7 +4,7 @@ using Todont.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddSingleton<ITodontRepository, InMemoryTodontRepository>();
+builder.Services.AddScoped<ITodontRepository, SqliteTodontRepository>();
 builder.Services.AddOpenApi();
 
 // Add CORS for future frontend integration
@@ -19,6 +19,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Initialize database
+var dbInitializer = new DatabaseInitializer(app.Configuration);
+dbInitializer.Initialize();
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
