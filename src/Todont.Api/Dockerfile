@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf 
 # Create non-root user for security
 RUN adduser --disabled-password --gecos "" appuser
 
+# Create data directory for SQLite database
+RUN mkdir -p /app/data && chown appuser:appuser /app/data
+
 # Copy published files
 COPY --from=build /app/publish .
 
