@@ -82,3 +82,42 @@ export async function updateItemStatus(
 
   return handleResponse<void>(response);
 }
+
+export async function updateItem(
+  listId: string,
+  itemId: string,
+  description: string,
+  avoidUntil: Date | null
+): Promise<void> {
+  const request: UpdateItemRequest = {
+    description,
+    avoidUntil: avoidUntil?.toISOString() ?? null,
+  };
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/lists/${listId}/items/${itemId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    }
+  );
+
+  return handleResponse<void>(response);
+}
+
+export async function deleteItem(
+  listId: string,
+  itemId: string
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/lists/${listId}/items/${itemId}`,
+    {
+      method: 'DELETE',
+    }
+  );
+
+  return handleResponse<void>(response);
+}

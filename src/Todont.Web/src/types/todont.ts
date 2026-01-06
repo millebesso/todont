@@ -32,7 +32,9 @@ export type CreateItemRequest = {
 };
 
 export type UpdateItemRequest = {
-  isChecked: boolean;
+  isChecked?: boolean;
+  description?: string;
+  avoidUntil?: string | null;
 };
 
 // This export ensures the module is not empty

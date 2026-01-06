@@ -118,6 +118,37 @@ public class SqliteTodontRepository : ITodontRepository
         return rowsAffected > 0;
     }
 
+    public bool UpdateItem(string listId, string itemId, string description, DateTime? avoidUntil)
+    {
+        using var connection = CreateConnection();
+
+        var rowsAffected = connection.Execute(
+            @"UPDATE Items SET Description = @Description, AvoidUntil = @AvoidUntil
+              WHERE Id = @ItemId AND ListId = @ListId",
+            new
+            {
+                Description = description,
+                AvoidUntil = avoidUntil?.ToString("O"),
+                ItemId = itemId,
+                ListId = listId
+            }
+        );
+
+        return rowsAffected > 0;
+    }
+
+    public bool DeleteItem(string listId, string itemId)
+    {
+        using var connection = CreateConnection();
+
+        var rowsAffected = connection.Execute(
+            "DELETE FROM Items WHERE Id = @ItemId AND ListId = @ListId",
+            new { ItemId = itemId, ListId = listId }
+        );
+
+        return rowsAffected > 0;
+    }
+
     private class ListDto
     {
         public string Id { get; set; } = string.Empty;

@@ -123,7 +123,7 @@ app.MapPost("/api/lists/{listId}/items", (string listId, CreateTodontItemRequest
 .WithName("AddItem")
 .WithOpenApi();
 
-// Update an item's checked status
+// Update an item
 app.MapPatch("/api/lists/{listId}/items/{itemId}", (string listId, string itemId, UpdateTodontItemRequest request, ITodontRepository repository) =>
 {
     // Get the list and item for validation
@@ -139,21 +139,49 @@ app.MapPatch("/api/lists/{listId}/items/{itemId}", (string listId, string itemId
         return Results.NotFound(new { error = "Item not found" });
     }
 
-    // Validate: if trying to uncheck, ensure the avoid-until date has passed
-    if (!request.IsChecked && !item.CanUncheck())
+    // Handle IsChecked update
+    if (request.IsChecked.HasValue)
     {
-        return Results.BadRequest(new { error = "Cannot uncheck item before avoid-until date has passed" });
+        // Validate: if trying to uncheck, ensure the avoid-until date has passed
+        if (!request.IsChecked.Value && !item.CanUncheck())
+        {
+            return Results.BadRequest(new { error = "Cannot uncheck item before avoid-until date has passed" });
+        }
+
+        var statusSuccess = repository.UpdateItemStatus(listId, itemId, request.IsChecked.Value);
+        if (!statusSuccess)
+        {
+            return Results.NotFound(new { error = "List or item not found" });
+        }
     }
 
-    var success = repository.UpdateItemStatus(listId, itemId, request.IsChecked);
-    if (!success)
+    // Handle Description/AvoidUntil update
+    if (request.Description != null)
     {
-        return Results.NotFound(new { error = "List or item not found" });
+        if (string.IsNullOrWhiteSpace(request.Description))
+        {
+            return Results.BadRequest(new { error = "Description cannot be empty" });
+        }
+
+        var updateSuccess = repository.UpdateItem(listId, itemId, request.Description, request.AvoidUntil);
+        if (!updateSuccess)
+        {
+            return Results.NotFound(new { error = "List or item not found" });
+        }
     }
 
     return Results.NoContent();
 })
-.WithName("UpdateItemStatus")
+.WithName("UpdateItem")
+.WithOpenApi();
+
+// Delete an item
+app.MapDelete("/api/lists/{listId}/items/{itemId}", (string listId, string itemId, ITodontRepository repository) =>
+{
+    var success = repository.DeleteItem(listId, itemId);
+    return success ? Results.NoContent() : Results.NotFound(new { error = "Item not found" });
+})
+.WithName("DeleteItem")
 .WithOpenApi();
 
 app.Run();

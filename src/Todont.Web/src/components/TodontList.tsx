@@ -5,7 +5,7 @@ import { TodontItem } from './TodontItem';
 
 export function TodontList() {
   const { id } = useParams<{ id: string }>();
-  const { list, loading, error, addItem, toggleItem } = useTodontList(id);
+  const { list, loading, error, addItem, toggleItem, updateItem, deleteItem } = useTodontList(id);
   const [description, setDescription] = useState('');
   const [avoidUntil, setAvoidUntil] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -115,7 +115,13 @@ export function TodontList() {
             ) : (
               <div className="space-y-1">
                 {list.items.map((item) => (
-                  <TodontItem key={item.id} item={item} onToggle={toggleItem} />
+                  <TodontItem
+                    key={item.id}
+                    item={item}
+                    onToggle={toggleItem}
+                    onUpdate={updateItem}
+                    onDelete={deleteItem}
+                  />
                 ))}
               </div>
             )}

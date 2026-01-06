@@ -8,6 +8,8 @@ interface UseTodontListResult {
   error: string | null;
   addItem: (description: string, avoidUntil?: Date) => Promise<void>;
   toggleItem: (itemId: string, isChecked: boolean) => Promise<void>;
+  updateItem: (itemId: string, description: string, avoidUntil: Date | null) => Promise<void>;
+  deleteItem: (itemId: string) => Promise<void>;
   refetch: () => Promise<void>;
 }
 
@@ -90,12 +92,74 @@ export function useTodontList(listId: string | undefined): UseTodontListResult {
     [listId, list, fetchList]
   );
 
+  const updateItem = useCallback(
+    async (itemId: string, description: string, avoidUntil: Date | null) => {
+      if (!listId || !list) return;
+
+      // Optimistic update
+      setList((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          items: prev.items.map((item) =>
+            item.id === itemId
+              ? {
+                  ...item,
+                  description,
+                  avoidUntil: avoidUntil?.toISOString() ?? null,
+                  isActive: item.isChecked || Boolean(avoidUntil && avoidUntil > new Date()),
+                  canUncheck: !avoidUntil || avoidUntil <= new Date(),
+                }
+              : item
+          ),
+        };
+      });
+
+      try {
+        setError(null);
+        await api.updateItem(listId, itemId, description, avoidUntil);
+      } catch (err) {
+        // Revert on error
+        setError(err instanceof Error ? err.message : 'Failed to update item');
+        await fetchList();
+      }
+    },
+    [listId, list, fetchList]
+  );
+
+  const deleteItem = useCallback(
+    async (itemId: string) => {
+      if (!listId || !list) return;
+
+      // Optimistic update
+      setList((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          items: prev.items.filter((item) => item.id !== itemId),
+        };
+      });
+
+      try {
+        setError(null);
+        await api.deleteItem(listId, itemId);
+      } catch (err) {
+        // Revert on error
+        setError(err instanceof Error ? err.message : 'Failed to delete item');
+        await fetchList();
+      }
+    },
+    [listId, list, fetchList]
+  );
+
   return {
     list,
     loading,
     error,
     addItem,
     toggleItem,
+    updateItem,
+    deleteItem,
     refetch: fetchList,
   };
 }
